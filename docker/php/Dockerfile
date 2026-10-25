@@ -21,11 +21,14 @@ RUN echo "date.timezone = America/Caracas" > /usr/local/etc/php/conf.d/timezone.
 RUN addgroup -g ${DEV_GID} devgroup \
  && adduser -D -u ${DEV_UID} -G devgroup devuser
 
+# Configure PHP-FPM to run as devuser
+RUN sed -i 's/user = www-data/user = devuser/' /usr/local/etc/php-fpm.d/www.conf \
+ && sed -i 's/group = www-data/group = devgroup/' /usr/local/etc/php-fpm.d/www.conf
+
 WORKDIR /var/www/html
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# NOTE: keep default user root so entrypoint can fix perms, entrypoint will drop to devuser
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["php-fpm"]
