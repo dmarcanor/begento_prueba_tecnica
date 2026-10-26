@@ -2,6 +2,32 @@
 
 API REST desarrollada con Laravel para gestión de productos con soporte multi-moneda.
 
+## Tabla de Contenidos
+
+- [Descripción](#descripción)
+- [Stack Tecnológico](#stack-tecnológico)
+- [Requisitos](#requisitos)
+- [Instalación](#instalación)
+- [Credenciales por Defecto](#credenciales-por-defecto)
+- [Endpoints de la API](#endpoints-de-la-api)
+- [Parámetros de Consulta](#parámetros-de-consulta)
+- [Formato de Respuestas](#formato-de-respuestas)
+- [Códigos de Estado](#códigos-de-estado)
+- [Validaciones](#validaciones)
+- [Comandos Útiles](#comandos-útiles)
+- [Tests](#tests)
+- [Documentación Interactiva](#documentación-interactiva)
+- [Documentación Adicional](#documentación-adicional)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Convenciones de Código](#convenciones-de-código)
+- [Seguridad](#seguridad)
+- [Características Técnicas](#características-técnicas)
+- [Variables de Entorno Principales](#variables-de-entorno-principales)
+- [Troubleshooting](#troubleshooting)
+- [Entrega](#entrega)
+- [Desarrollo](#desarrollo)
+- [Licencia](#licencia)
+
 ## Descripción
 
 Sistema que permite:
