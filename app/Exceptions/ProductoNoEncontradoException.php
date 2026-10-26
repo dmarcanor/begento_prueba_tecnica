@@ -6,9 +6,6 @@ namespace App\Exceptions;
 
 use RuntimeException;
 
-/**
- * Se lanza cuando un producto solicitado no existe.
- */
 class ProductoNoEncontradoException extends RuntimeException
 {
     public function __construct()
