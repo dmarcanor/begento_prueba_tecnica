@@ -120,26 +120,29 @@ docker compose exec php php artisan db:seed
 ### Sin Docker
 
 ```bash
-# 1. Instalar PHP, extensiones y PostgreSQL
+# 1. Instalar PHP 8.4, extensiones y PostgreSQL
 sudo apt update
-sudo apt install postgresql php8.4-pgsql php8.4-xml
+sudo apt install -y software-properties-common
+sudo add-apt-repository -y ppa:ondrej/php
+sudo apt update
+sudo apt install -y postgresql php8.4 php8.4-pgsql php8.4-xml php8.4-mbstring php8.4-curl php8.4-zip php8.4-bcmath composer curl
 ```
 
 ```bash
-# 2. Clonar el repositorio
-git clone <url-del-repositorio>
-cd prueba_tecnica
+# 2. Iniciar PostgreSQL (si no se inició automáticamente)
+sudo pg_ctlcluster 16 main start
 
-# 3. Instalar dependencias PHP
-composer install
-
-# 4. Configurar la contraseña del usuario de PostgreSQL
+# 3. Configurar la contraseña del usuario de PostgreSQL
 sudo -u postgres psql
 \password postgres
 \q
 
-# 5. Crear la base de datos
+# 4. Crear la base de datos
 sudo -u postgres psql -c "CREATE DATABASE prueba_tecnica;"
+
+# 5. Clonar el repositorio
+git clone <url-del-repositorio>
+cd prueba_tecnica
 
 # 6. Configurar variables de entorno
 cp .env.example .env
@@ -147,18 +150,21 @@ cp .env.example .env
 #   DB_HOST=127.0.0.1
 #   DB_DATABASE=prueba_tecnica
 #   DB_USERNAME=postgres
-#   DB_PASSWORD=<la contraseña definida en el paso 4>
+#   DB_PASSWORD=<la contraseña definida en el paso 3>
 
-# 7. Generar clave de aplicación
+# 7. Instalar dependencias PHP
+composer install
+
+# 8. Generar clave de aplicación
 php artisan key:generate
 
-# 8. Ejecutar migraciones
+# 9. Ejecutar migraciones
 php artisan migrate
 
-# 9. Cargar datos de prueba
+# 10. Cargar datos de prueba
 php artisan db:seed
 
-# 10. Iniciar servidor de desarrollo
+# 11. Iniciar servidor de desarrollo
 php artisan serve
 ```
 
