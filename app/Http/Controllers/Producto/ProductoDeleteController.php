@@ -14,9 +14,9 @@ class ProductoDeleteController
 {
     public function __construct(private EliminarProducto $eliminarProducto) {}
 
-    public function __invoke(int $id): JsonResponse
+    public function __invoke(int $productoId): JsonResponse
     {
-        ($this->eliminarProducto)($id);
+        ($this->eliminarProducto)($productoId);
 
         return response()->json([
             'error' => [],

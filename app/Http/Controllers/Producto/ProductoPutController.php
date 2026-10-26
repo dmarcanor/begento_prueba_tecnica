@@ -15,9 +15,9 @@ class ProductoPutController
 {
     public function __construct(private ActualizarProducto $actualizarProducto) {}
 
-    public function __invoke(int $id, ProductoPutRequest $request): JsonResponse
+    public function __invoke(int $productoId, ProductoPutRequest $request): JsonResponse
     {
-        $producto = ($this->actualizarProducto)($id, $request->validated());
+        $producto = ($this->actualizarProducto)($productoId, $request->validated());
 
         return response()->json([
             'error' => [],

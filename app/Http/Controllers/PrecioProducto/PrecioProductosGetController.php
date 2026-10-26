@@ -15,9 +15,9 @@ class PrecioProductosGetController
 {
     public function __construct(private ObtenerPrecios $obtenerPrecios) {}
 
-    public function __invoke(int $idProducto, PreciosGetRequest $request): JsonResponse
+    public function __invoke(int $productoId, PreciosGetRequest $request): JsonResponse
     {
-        $precios = ($this->obtenerPrecios)($idProducto, [
+        $precios = ($this->obtenerPrecios)($productoId, [
             'per_page' => $request->validated('per_page', 10),
             'sort_by' => $request->validated('sort_by', 'created_at'),
             'sort_direction' => $request->validated('sort_direction', 'desc'),

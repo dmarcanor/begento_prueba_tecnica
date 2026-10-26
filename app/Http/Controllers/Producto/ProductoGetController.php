@@ -14,9 +14,9 @@ class ProductoGetController
 {
     public function __construct(private ObtenerProducto $obtenerProducto) {}
 
-    public function __invoke(int $id): JsonResponse
+    public function __invoke(int $productoId): JsonResponse
     {
-        $producto = ($this->obtenerProducto)($id);
+        $producto = ($this->obtenerProducto)($productoId);
 
         return response()->json([
             'error' => [],

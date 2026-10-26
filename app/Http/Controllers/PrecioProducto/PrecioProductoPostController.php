@@ -15,9 +15,9 @@ class PrecioProductoPostController
 {
     public function __construct(private CrearPrecio $crearPrecio) {}
 
-    public function __invoke(int $idProducto, PrecioPostRequest $request): JsonResponse
+    public function __invoke(int $productoId, PrecioPostRequest $request): JsonResponse
     {
-        $precio = ($this->crearPrecio)($idProducto, $request->validated());
+        $precio = ($this->crearPrecio)($productoId, $request->validated());
 
         return response()->json([
             'error' => [],
