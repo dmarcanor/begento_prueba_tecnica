@@ -5,23 +5,43 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Producto;
 
 use App\Actions\Producto\ActualizarProducto;
-use App\Http\Requests\Producto\ProductoPutRequest;
+use App\Exceptions\ProductoNoEncontradoException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
-/**
- * Controlador para actualizar un producto.
- */
 class ProductoPutController
 {
-    public function __construct(private ActualizarProducto $actualizarProducto) {}
+    public function __construct(private ActualizarProducto $action) {}
 
-    public function __invoke(int $productoId, ProductoPutRequest $request): JsonResponse
+    public function __invoke(Request $request, int $productoId): JsonResponse
     {
-        $producto = ($this->actualizarProducto)($productoId, $request->validated());
+        try {
+            $validated = $request->validate([
+                'name' => ['string', 'max:255'],
+                'description' => ['string'],
+                'price' => ['decimal:0,2', 'min:0', 'max:9999999999999.99'],
+                'currency_id' => ['exists:divisas,id'],
+                'tax_cost' => ['decimal:0,2', 'min:0', 'max:9999999999999.99'],
+                'manufacturing_cost' => ['decimal:0,2', 'min:0', 'max:9999999999999.99'],
+            ]);
 
-        return response()->json([
-            'error' => [],
-            'body' => ['product' => $producto],
-        ], JsonResponse::HTTP_OK);
+            $producto = ($this->action)($productoId, $validated);
+
+            return response()->json([
+                'error' => [],
+                'body' => ['product' => $producto],
+            ], JsonResponse::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error' => $e->errors(),
+                'body' => [],
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        } catch (ProductoNoEncontradoException $e) {
+            return response()->json([
+                'error' => [$e->getMessage()],
+                'body' => [],
+            ], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 }

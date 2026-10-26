@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Producto;
 
 use App\Actions\Producto\ObtenerProducto;
+use App\Exceptions\ProductoNoEncontradoException;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -16,11 +17,18 @@ class ProductoGetController
 
     public function __invoke(int $productoId): JsonResponse
     {
-        $producto = ($this->obtenerProducto)($productoId);
+        try {
+            $producto = ($this->obtenerProducto)($productoId);
 
-        return response()->json([
-            'error' => [],
-            'body' => ['product' => $producto],
-        ], JsonResponse::HTTP_OK);
+            return response()->json([
+                'error' => [],
+                'body' => ['product' => $producto],
+            ], JsonResponse::HTTP_OK);
+        } catch (ProductoNoEncontradoException $e) {
+            return response()->json([
+                'error' => [$e->getMessage()],
+                'body' => [],
+            ], JsonResponse::HTTP_NOT_FOUND);
+        }
     }
 }
