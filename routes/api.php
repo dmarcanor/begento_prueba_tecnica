@@ -20,13 +20,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Endpoints de productos
     Route::get('/products', ProductosGetController::class);
     Route::post('/products', ProductoPostController::class);
-    Route::get('/products/{producto}', ProductoGetController::class)->whereNumber('producto');
-    Route::put('/products/{producto}', ProductoPutController::class)->whereNumber('producto');
-    Route::delete('/products/{producto}', ProductoDeleteController::class)->whereNumber('producto');
-    
+    Route::get('/products/{productoId}', ProductoGetController::class)->whereNumber('productoId');
+    Route::put('/products/{productoId}', ProductoPutController::class)->whereNumber('productoId');
+    Route::delete('/products/{productoId}', ProductoDeleteController::class)->whereNumber('productoId');
+
     // Endpoints de precios de productos
-    Route::get('/products/{idProducto}/prices', PrecioProductosGetController::class)->whereNumber('idProducto');
-    Route::post('/products/{idProducto}/prices', PrecioProductoPostController::class)->whereNumber('idProducto');
+    Route::get('/products/{productoId}/prices', PrecioProductosGetController::class)->whereNumber('productoId');
+    Route::post('/products/{productoId}/prices', PrecioProductoPostController::class)->whereNumber('productoId');
 
     // Endpoints de divisas
     Route::get('/divisas', DivisasGetController::class);
