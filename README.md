@@ -417,6 +417,9 @@ La API incluye documentación interactiva con Swagger UI:
 │   │   │   └── ObtenerProductos.php
 │   │   └── Usuario/
 │   │       └── LoginUsuario.php
+│   ├── Exceptions/                     # Excepciones de dominio
+│   │   ├── CredencialesInvalidasException.php
+│   │   └── ProductoNoEncontradoException.php
 │   ├── Http/
 │   │   ├── Controllers/                # Controladores invokables
 │   │   │   ├── Autenticacion/
@@ -446,11 +449,14 @@ La API incluye documentación interactiva con Swagger UI:
 │   │       │   └── ProductoPutRequest.php
 │   │       └── Usuario/
 │   │           └── LoginPostRequest.php
-│   └── Models/
-│       ├── Usuario.php                 # Modelo de usuario
-│       ├── Producto.php                # Modelo de producto
-│       ├── PrecioProducto.php          # Modelo de precio
-│       └── Divisa.php                  # Modelo de moneda
+│   ├── Models/
+│   │   ├── Usuario.php                 # Modelo de usuario
+│   │   ├── Producto.php                # Modelo de producto
+│   │   ├── PrecioProducto.php          # Modelo de precio
+│   │   └── Divisa.php                  # Modelo de moneda
+│   └── Services/                       # Servicios de dominio
+│       └── Producto/
+│           └── BuscarProducto.php
 ├── database/
 │   ├── migrations/                     # Migraciones de base de datos
 │   ├── seeders/                        # Datos de prueba
@@ -493,13 +499,15 @@ Los controladores son **invokables** (usando `__invoke`) y siguen el patrón:
 ### Ejemplos
 
 ```php
-// Controlador invokable (un endpoint = un controlador)
+// Controlador invokable con inyección por constructor
 class ProductoPostController
 {
-    public function __invoke(ProductoPostRequest $request, CrearProducto $action): JsonResponse
+    public function __construct(private CrearProducto $crearProducto) {}
+
+    public function __invoke(ProductoPostRequest $request): JsonResponse
     {
-        $producto = $action($request->validated());
-        return response()->json(['data' => $producto], 201);
+        $producto = ($this->crearProducto)($request->validated());
+        return response()->json(['error' => [], 'body' => ['product' => $producto]], 201);
     }
 }
 
@@ -509,6 +517,19 @@ class CrearProducto
     public function __invoke(array $datos): Producto
     {
         return Producto::create($datos);
+    }
+}
+
+// Servicio para buscar productos (lanza excepción si no existe)
+class BuscarProducto
+{
+    public function __invoke(int $id): Producto
+    {
+        $producto = Producto::find($id);
+        if (!$producto) {
+            throw new ProductoNoEncontradoException();
+        }
+        return $producto;
     }
 }
 ```
