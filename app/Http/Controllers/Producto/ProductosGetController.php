@@ -10,9 +10,11 @@ use Illuminate\Http\JsonResponse;
 
 class ProductosGetController
 {
-    public function __invoke(ProductosGetRequest $request, ObtenerProductos $action): JsonResponse
+    public function __construct(private ObtenerProductos $action) {}
+
+    public function __invoke(ProductosGetRequest $request): JsonResponse
     {
-        $productos = $action([
+        $productos = ($this->action)([
             'per_page' => $request->validated('per_page', 10),
             'sort_by' => $request->validated('sort_by', 'id'),
             'sort_direction' => $request->validated('sort_direction', 'desc'),
