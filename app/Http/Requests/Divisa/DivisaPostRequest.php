@@ -9,9 +9,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Valida los datos para crear una divisa.
- */
 class DivisaPostRequest extends FormRequest
 {
     public function authorize(): bool
@@ -22,8 +19,8 @@ class DivisaPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'symbol' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255'],
+            'symbol' => ['required', 'string', 'max:255'],
             'exchange_rate' => ['required', 'decimal:0,8', 'min:0', 'max:99999999.99999999'],
         ];
     }

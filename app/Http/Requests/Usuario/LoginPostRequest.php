@@ -9,9 +9,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Valida los datos para iniciar sesión.
- */
 class LoginPostRequest extends FormRequest
 {
     public function authorize(): bool
@@ -22,8 +19,8 @@ class LoginPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|string',
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ];
     }
 

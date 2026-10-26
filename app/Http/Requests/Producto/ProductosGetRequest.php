@@ -23,7 +23,7 @@ class ProductosGetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'per_page' => 'integer|min:1|max:100',
+            'per_page' => ['integer', 'min:1', 'max:100'],
             'sort_by' => Rule::in([
                 'id', 'name', 'description', 'price', 'currency_id', 'tax_cost', 'manufacturing_cost', 'created_at', 'updated_at',
             ]),

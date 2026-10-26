@@ -22,8 +22,8 @@ class ProductoPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
             'price' => ['required', 'decimal:0,2', 'min:0', 'max:9999999999999.99'],
             'currency_id' => ['required', 'exists:divisas,id'],
             'tax_cost' => ['required', 'decimal:0,2', 'min:0', 'max:9999999999999.99'],

@@ -23,7 +23,7 @@ class PreciosGetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'per_page' => 'integer|min:1|max:100',
+            'per_page' => ['integer', 'min:1', 'max:100'],
             'sort_by' => Rule::in([
                 'id', 'product_id', 'currency_id', 'price', 'created_at', 'updated_at',
             ]),

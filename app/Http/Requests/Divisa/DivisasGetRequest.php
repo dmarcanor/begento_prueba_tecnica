@@ -10,9 +10,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rule;
 
-/**
- * Valida los parámetros de consulta para listar divisas.
- */
 class DivisasGetRequest extends FormRequest
 {
     public function authorize(): bool
@@ -23,7 +20,7 @@ class DivisasGetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'per_page' => 'integer|min:1|max:100',
+            'per_page' => ['integer', 'min:1', 'max:100'],
             'sort_by' => Rule::in([
                 'id', 'name', 'symbol', 'exchange_rate', 'created_at', 'updated_at',
             ]),
