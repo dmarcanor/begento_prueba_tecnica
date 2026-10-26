@@ -153,7 +153,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Producto de ejemplo\",\n  \"description\": \"Descripción detallada del producto\",\n  \"price\": 100.00,\n  \"currency_id\": 1,\n  \"tax_cost\": 16.00,\n  \"manufacturing_cost\": 50.00\n}"
+              "raw": "{\n  \"name\": \"Producto de ejemplo\",\n  \"description\": \"Descripción detallada del producto\",\n  \"price\": 100.00,\n  \"currency_id\": {{currency_id}},\n  \"tax_cost\": 16.00,\n  \"manufacturing_cost\": 50.00\n}"
             },
             "url": {
               "raw": "{{base_url}}/products",
@@ -197,7 +197,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Producto actualizado\",\n  \"description\": \"Descripción actualizada\",\n  \"price\": 150.00,\n  \"currency_id\": 1,\n  \"tax_cost\": 20.00,\n  \"manufacturing_cost\": 60.00\n}"
+              "raw": "{\n  \"name\": \"Producto actualizado\",\n  \"description\": \"Descripción actualizada\",\n  \"price\": 150.00,\n  \"currency_id\": {{currency_id}},\n  \"tax_cost\": 20.00,\n  \"manufacturing_cost\": 60.00\n}"
             },
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}",
@@ -391,7 +391,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"price\": 120.00,\n  \"currency_id\": 1\n}"
+              "raw": "{\n  \"price\": 120.00,\n  \"currency_id\": {{currency_id}}\n}"
             },
             "url": {
               "raw": "{{base_url}}/products/{{product_id}}/prices",
