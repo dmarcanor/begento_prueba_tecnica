@@ -336,7 +336,7 @@ La API incluye documentación interactiva con Swagger UI:
 
 ## Documentación Adicional
 
-- **OpenAPI Specification**: `docs/openapi.yaml`
+- **OpenAPI Specification**: `public/docs/openapi.yaml`
 - **Postman Collection**: `docs/postman_collection.json`
 - **Insomnia Collection**: `docs/insomnia.json`
 - **Documentación completa**: `docs/API.md`
@@ -364,11 +364,15 @@ La API incluye documentación interactiva con Swagger UI:
 │   ├── nginx/default.conf              # Configuración Nginx
 │   └── postgres/initdb/                # Scripts de inicialización
 ├── docs/
-│   ├── openapi.yaml                    # Especificación OpenAPI
 │   ├── postman_collection.json         # Colección Postman
 │   ├── insomnia.json                   # Colección Insomnia
-│   ├── API.md                          # Documentación completa
-│   └── swagger-ui.html                 # UI de Swagger
+│   └── API.md                          # Documentación completa
+├── public/
+│   └── docs/
+│       ├── openapi.yaml                # Especificación OpenAPI
+│       ├── swagger-ui.html             # UI de Swagger
+│       ├── swagger-ui.css              # Estilos Swagger UI
+│       └── swagger-ui-bundle.js        # JavaScript Swagger UI
 ├── routes/
 │   └── api.php                         # Rutas de la API
 └── tests/                              # Tests automatizados
@@ -458,7 +462,7 @@ El setup requiere una contraseña para la base de datos. Proporciona una contras
 
 La prueba incluye los siguientes entregables requeridos:
 
-✅ **Swagger/OpenAPI**: `docs/openapi.yaml` con UI interactiva en `docs/swagger-ui.html`
+✅ **Swagger/OpenAPI**: `public/docs/openapi.yaml` con UI interactiva en `http://localhost:8000/docs/swagger-ui.html`
 ✅ **Postman**: `docs/postman_collection.json`
 ✅ **Insomnia**: `docs/insomnia.json`
 ✅ **Documento**: `docs/API.md` con documentación completa
