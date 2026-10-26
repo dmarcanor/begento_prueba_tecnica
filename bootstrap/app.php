@@ -6,6 +6,8 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use App\Exceptions\ProductoNoEncontradoException;
+use App\Exceptions\CredencialesInvalidasException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -41,5 +43,21 @@ return Application::configure(basePath: dirname(__DIR__))
                     'body' => [],
                 ], 400);
             }
+        });
+
+        // Producto no encontrado (404)
+        $exceptions->render(function (ProductoNoEncontradoException $e, Request $request) {
+            return response()->json([
+                'error' => [$e->getMessage()],
+                'body' => [],
+            ], 404);
+        });
+
+        // Credenciales inválidas en login (401)
+        $exceptions->render(function (CredencialesInvalidasException $e, Request $request) {
+            return response()->json([
+                'error' => [$e->getMessage()],
+                'body' => [],
+            ], 401);
         });
     })->create();
