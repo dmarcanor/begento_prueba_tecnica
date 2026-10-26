@@ -221,6 +221,26 @@ curl -X POST http://localhost:8000/api/products/1/prices \
   }'
 ```
 
+### Divisas (Requiere Autenticación)
+
+**GET /api/divisas** - Listar divisas
+```bash
+curl -X GET "http://localhost:8000/api/divisas?per_page=10&page=1" \
+  -H "Authorization: Bearer {tu_token}"
+```
+
+**POST /api/divisas** - Crear divisa
+```bash
+curl -X POST http://localhost:8000/api/divisas \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer {tu_token}" \
+  -d '{
+    "name": "Euro",
+    "symbol": "€",
+    "exchange_rate": 0.92000000
+  }'
+```
+
 ## Parámetros de Consulta
 
 ### Listar productos y precios
@@ -237,6 +257,10 @@ curl -X POST http://localhost:8000/api/products/1/prices \
 ### Campos disponibles para ordenar precios
 
 - `id`, `product_id`, `currency_id`, `price`, `created_at`, `updated_at`
+
+### Campos disponibles para ordenar divisas
+
+- `id`, `name`, `symbol`, `exchange_rate`, `created_at`, `updated_at`
 
 ## Formato de Respuestas
 
@@ -292,6 +316,12 @@ curl -X POST http://localhost:8000/api/products/1/prices \
 
 - `price`: requerido, decimal (0 a 9999999999999.99), máximo 2 decimales
 - `currency_id`: requerido, integer, debe existir en la tabla divisas
+
+### Divisas
+
+- `name`: requerido, string, máximo 255 caracteres
+- `symbol`: requerido, string, máximo 255 caracteres
+- `exchange_rate`: requerido, decimal (0 a 99999999.99999999), máximo 8 decimales
 
 ## Comandos Útiles
 
@@ -349,7 +379,8 @@ La API incluye documentación interactiva con Swagger UI:
 │   ├── Http/Controllers/
 │   │   ├── UsuarioController.php       # Autenticación
 │   │   ├── ProductoController.php      # CRUD de productos
-│   │   └── PrecioProductoController.php # Gestión de precios
+│   │   ├── PrecioProductoController.php # Gestión de precios
+│   │   └── DivisaController.php         # Gestión de divisas
 │   └── Models/
 │       ├── Usuario.php                 # Modelo de usuario
 │       ├── Producto.php                # Modelo de producto
