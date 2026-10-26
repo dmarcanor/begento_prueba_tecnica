@@ -8,9 +8,6 @@ use App\Actions\Usuario\LoginUsuario;
 use App\Http\Requests\Usuario\LoginPostRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Controlador para iniciar sesión.
- */
 class LoginPostController
 {
     public function __construct(private LoginUsuario $loginUsuario) {}

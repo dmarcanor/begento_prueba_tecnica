@@ -7,9 +7,6 @@ namespace App\Actions\Divisa;
 use App\Models\Divisa;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-/**
- * Obtiene una lista paginada de divisas.
- */
 class ObtenerDivisas
 {
     public function __invoke(array $params): LengthAwarePaginator

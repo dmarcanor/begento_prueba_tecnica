@@ -8,9 +8,6 @@ use App\Exceptions\CredencialesInvalidasException;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * Autentica un usuario y genera un token.
- */
 class LoginUsuario
 {
     public function __invoke(string $email, string $password): string
