@@ -12,12 +12,12 @@ use Illuminate\Validation\ValidationException;
 
 class ProductosGetController
 {
-    public function __construct(private ObtenerProductos $action) {}
+    public function __construct(private ObtenerProductos $obtenerProductos) {}
 
     public function __invoke(Request $request): JsonResponse
     {
         try {
-            $validated = $request->validate([
+            $validatedRequest = $request->validate([
                 'per_page' => ['integer', 'min:1', 'max:100'],
                 'sort_by' => Rule::in([
                     'id', 'name', 'description', 'price', 'currency_id', 'tax_cost', 'manufacturing_cost', 'created_at', 'updated_at',
@@ -25,10 +25,10 @@ class ProductosGetController
                 'sort_direction' => Rule::in(['asc', 'desc']),
             ]);
 
-            $productos = ($this->action)([
-                'per_page' => $validated['per_page'] ?? 10,
-                'sort_by' => $validated['sort_by'] ?? 'id',
-                'sort_direction' => $validated['sort_direction'] ?? 'desc',
+            $productos = ($this->obtenerProductos)([
+                'per_page' => $validatedRequest['per_page'] ?? 10,
+                'sort_by' => $validatedRequest['sort_by'] ?? 'id',
+                'sort_direction' => $validatedRequest['sort_direction'] ?? 'desc',
             ]);
 
             return response()->json([

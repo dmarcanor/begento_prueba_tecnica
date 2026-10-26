@@ -12,12 +12,12 @@ use Illuminate\Validation\ValidationException;
 
 class ProductoPutController
 {
-    public function __construct(private ActualizarProducto $action) {}
+    public function __construct(private ActualizarProducto $actualizarProducto) {}
 
     public function __invoke(Request $request, int $productoId): JsonResponse
     {
         try {
-            $validated = $request->validate([
+            $validatedRequest = $request->validate([
                 'name' => ['string', 'max:255'],
                 'description' => ['string'],
                 'price' => ['decimal:0,2', 'min:0', 'max:9999999999999.99'],
@@ -26,7 +26,7 @@ class ProductoPutController
                 'manufacturing_cost' => ['decimal:0,2', 'min:0', 'max:9999999999999.99'],
             ]);
 
-            $producto = ($this->action)($productoId, $validated);
+            $producto = ($this->actualizarProducto)($productoId, $validatedRequest);
 
             return response()->json([
                 'error' => [],

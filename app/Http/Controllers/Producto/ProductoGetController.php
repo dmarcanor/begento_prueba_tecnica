@@ -8,9 +8,6 @@ use App\Actions\Producto\ObtenerProducto;
 use App\Exceptions\ProductoNoEncontradoException;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Controlador para obtener un producto específico.
- */
 class ProductoGetController
 {
     public function __construct(private ObtenerProducto $obtenerProducto) {}

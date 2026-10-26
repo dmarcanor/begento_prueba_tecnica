@@ -10,12 +10,12 @@ use Illuminate\Http\JsonResponse;
 
 class ProductoDeleteController
 {
-    public function __construct(private EliminarProducto $action) {}
+    public function __construct(private EliminarProducto $eliminarProducto) {}
 
     public function __invoke(int $productoId): JsonResponse
     {
         try {
-            ($this->action)($productoId);
+            ($this->eliminarProducto)($productoId);
 
             return response()->json([
                 'error' => [],

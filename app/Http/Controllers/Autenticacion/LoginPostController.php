@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Autenticacion;
 
-use App\Actions\Usuario\LoginUsuario;
+use App\Actions\Autenticacion\LoginUsuario;
 use App\Exceptions\CredencialesInvalidasException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

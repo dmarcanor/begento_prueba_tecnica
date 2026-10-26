@@ -12,17 +12,17 @@ use Illuminate\Validation\ValidationException;
 
 class PrecioProductoPostController
 {
-    public function __construct(private CrearPrecio $action) {}
+    public function __construct(private CrearPrecio $crearPrecio) {}
 
     public function __invoke(Request $request, int $productoId): JsonResponse
     {
         try {
-            $validated = $request->validate([
+            $validatedRequest = $request->validate([
                 'price' => ['required', 'decimal:0,2', 'min:0', 'max:9999999999999.99'],
                 'currency_id' => ['required', 'exists:divisas,id'],
             ]);
 
-            $precio = ($this->action)($productoId, $validated);
+            $precio = ($this->crearPrecio)($productoId, $validatedRequest);
 
             return response()->json([
                 'error' => [],

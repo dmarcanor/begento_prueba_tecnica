@@ -12,21 +12,21 @@ use Illuminate\Validation\ValidationException;
 
 class DivisasGetController
 {
-    public function __construct(private ObtenerDivisas $action) {}
+    public function __construct(private ObtenerDivisas $obtenerDivisas) {}
 
     public function __invoke(Request $request): JsonResponse
     {
         try {
-            $validated = $request->validate([
+            $validatedRequest = $request->validate([
                 'per_page' => ['integer', 'min:1', 'max:100'],
                 'sort_by' => Rule::in(['id', 'name', 'symbol', 'exchange_rate', 'created_at', 'updated_at']),
                 'sort_direction' => Rule::in(['asc', 'desc']),
             ]);
 
-            $divisas = ($this->action)([
-                'per_page' => $validated['per_page'] ?? 10,
-                'sort_by' => $validated['sort_by'] ?? 'id',
-                'sort_direction' => $validated['sort_direction'] ?? 'desc',
+            $divisas = ($this->obtenerDivisas)([
+                'per_page' => $validatedRequest['per_page'] ?? 10,
+                'sort_by' => $validatedRequest['sort_by'] ?? 'id',
+                'sort_direction' => $validatedRequest['sort_direction'] ?? 'desc',
             ]);
 
             return response()->json([
