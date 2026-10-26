@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DivisaController;
 use App\Http\Controllers\PrecioProductoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UsuarioController;
@@ -20,4 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Endpoints de precios de productos
     Route::get('/products/{idProducto}/prices', [PrecioProductoController::class, 'index'])->whereNumber('idProducto');
     Route::post('/products/{idProducto}/prices', [PrecioProductoController::class, 'store'])->whereNumber('idProducto');
+
+    // Endpoints de divisas
+    Route::get('/divisas', [DivisaController::class, 'index']);
+    Route::post('/divisas', [DivisaController::class, 'store']);
 });
