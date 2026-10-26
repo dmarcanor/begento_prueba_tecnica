@@ -10,9 +10,11 @@ use Illuminate\Http\JsonResponse;
 
 class DivisasGetController
 {
-    public function __invoke(DivisasGetRequest $request, ObtenerDivisas $action): JsonResponse
+    public function __construct(private ObtenerDivisas $action) {}
+
+    public function __invoke(DivisasGetRequest $request): JsonResponse
     {
-        $divisas = $action([
+        $divisas = ($this->action)([
             'per_page' => $request->validated('per_page', 10),
             'sort_by' => $request->validated('sort_by', 'id'),
             'sort_direction' => $request->validated('sort_direction', 'desc'),
