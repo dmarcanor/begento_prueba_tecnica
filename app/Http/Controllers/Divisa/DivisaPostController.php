@@ -8,9 +8,6 @@ use App\Actions\Divisa\CrearDivisa;
 use App\Http\Requests\Divisa\DivisaPostRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Controlador para crear una divisa.
- */
 class DivisaPostController
 {
     public function __invoke(DivisaPostRequest $request, CrearDivisa $action): JsonResponse

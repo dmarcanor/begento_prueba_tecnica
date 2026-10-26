@@ -8,9 +8,6 @@ use App\Actions\Producto\CrearProducto;
 use App\Http\Requests\Producto\ProductoPostRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Controlador para crear un producto.
- */
 class ProductoPostController
 {
     public function __invoke(ProductoPostRequest $request, CrearProducto $action): JsonResponse

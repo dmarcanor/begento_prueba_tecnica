@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Producto;
 
-use App\Actions\Producto\ObtenerProducto;
 use App\Actions\Producto\EliminarProducto;
 use Illuminate\Http\JsonResponse;
 
@@ -13,18 +12,11 @@ use Illuminate\Http\JsonResponse;
  */
 class ProductoDeleteController
 {
-    public function __invoke(int $id, ObtenerProducto $obtener, EliminarProducto $eliminar): JsonResponse
+    public function __construct(private EliminarProducto $eliminarProducto) {}
+
+    public function __invoke(int $id): JsonResponse
     {
-        $producto = $obtener($id);
-
-        if (!$producto) {
-            return response()->json([
-                'error' => ['Product not found'],
-                'body' => [],
-            ], JsonResponse::HTTP_NOT_FOUND);
-        }
-
-        $eliminar($producto);
+        ($this->eliminarProducto)($id);
 
         return response()->json([
             'error' => [],

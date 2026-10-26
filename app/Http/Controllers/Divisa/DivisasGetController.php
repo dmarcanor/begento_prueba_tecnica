@@ -8,9 +8,6 @@ use App\Actions\Divisa\ObtenerDivisas;
 use App\Http\Requests\Divisa\DivisasGetRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Controlador para listar divisas.
- */
 class DivisasGetController
 {
     public function __invoke(DivisasGetRequest $request, ObtenerDivisas $action): JsonResponse

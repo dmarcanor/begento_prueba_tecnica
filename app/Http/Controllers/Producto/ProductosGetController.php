@@ -8,9 +8,6 @@ use App\Actions\Producto\ObtenerProductos;
 use App\Http\Requests\Producto\ProductosGetRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * Controlador para listar productos.
- */
 class ProductosGetController
 {
     public function __invoke(ProductosGetRequest $request, ObtenerProductos $action): JsonResponse

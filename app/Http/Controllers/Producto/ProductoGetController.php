@@ -12,16 +12,11 @@ use Illuminate\Http\JsonResponse;
  */
 class ProductoGetController
 {
-    public function __invoke(int $id, ObtenerProducto $action): JsonResponse
-    {
-        $producto = $action($id);
+    public function __construct(private ObtenerProducto $obtenerProducto) {}
 
-        if (!$producto) {
-            return response()->json([
-                'error' => ['Product not found'],
-                'body' => [],
-            ], JsonResponse::HTTP_NOT_FOUND);
-        }
+    public function __invoke(int $id): JsonResponse
+    {
+        $producto = ($this->obtenerProducto)($id);
 
         return response()->json([
             'error' => [],
