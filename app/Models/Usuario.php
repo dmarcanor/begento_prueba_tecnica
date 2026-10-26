@@ -13,9 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Database\Factories\UsuarioFactory;
 
-/**
- * Modelo que representa a un usuario del sistema.
- */
+
 #[Table('users')]
 #[Fillable([
     'name',
@@ -31,11 +29,6 @@ class Usuario extends Authenticatable
     /** @use HasFactory<UsuarioFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * Los atributos que deben ser convertidos a tipos nativos.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [

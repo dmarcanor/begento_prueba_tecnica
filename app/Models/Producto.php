@@ -12,9 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Database\Factories\ProductoFactory;
 
-/**
- * Modelo que representa un producto del sistema.
- */
 #[Fillable([
     'name',
     'description',
@@ -28,11 +25,6 @@ class Producto extends Model
     /** @use HasFactory<ProductoFactory> */
     use HasFactory, SoftDeletes;
 
-    /**
-     * Los atributos que deben ser convertidos a tipos nativos.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -42,17 +34,11 @@ class Producto extends Model
         ];
     }
 
-    /**
-     * Relación: un producto pertenece a una divisa.
-     */
     public function divisa(): BelongsTo
     {
         return $this->belongsTo(Divisa::class, 'currency_id');
     }
 
-    /**
-     * Relación: un producto puede tener muchos precios.
-     */
     public function preciosProductos(): HasMany
     {
         return $this->hasMany(PrecioProducto::class);

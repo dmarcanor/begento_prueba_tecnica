@@ -10,9 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Database\Factories\DivisaFactory;
 
-/**
- * Modelo que representa una divisa (moneda) del sistema.
- */
 #[Fillable([
     'name',
     'symbol',
@@ -23,11 +20,6 @@ class Divisa extends Model
     /** @use HasFactory<DivisaFactory> */
     use HasFactory;
 
-    /**
-     * Los atributos que deben ser convertidos a tipos nativos.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -35,17 +27,11 @@ class Divisa extends Model
         ];
     }
 
-    /**
-     * Relación: una divisa puede tener muchos productos.
-     */
     public function productos(): HasMany
     {
         return $this->hasMany(Producto::class);
     }
 
-    /**
-     * Relación: una divisa puede tener muchos precios de productos.
-     */
     public function preciosProductos(): HasMany
     {
         return $this->hasMany(PrecioProducto::class);
