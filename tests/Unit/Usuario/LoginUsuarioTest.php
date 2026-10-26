@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Usuario;
 
-use App\Actions\Usuario\LoginUsuario;
+use App\Actions\Autenticacion\LoginUsuario;
 use App\Exceptions\CredencialesInvalidasException;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,6 +42,7 @@ class LoginUsuarioTest extends TestCase
         $action = new LoginUsuario();
 
         $this->expectException(CredencialesInvalidasException::class);
+        $this->expectExceptionMessage('Unauthorized');
 
         $action('nonexistent@example.com', 'any-password');
     }
