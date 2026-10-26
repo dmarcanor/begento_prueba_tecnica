@@ -7,9 +7,6 @@ namespace App\Services\Producto;
 use App\Exceptions\ProductoNoEncontradoException;
 use App\Models\Producto;
 
-/**
- * Busca un producto por su ID.
- */
 class BuscarProducto
 {
     public function __invoke(int $id): Producto
