@@ -421,34 +421,21 @@ La API incluye documentación interactiva con Swagger UI:
 │   │   ├── CredencialesInvalidasException.php
 │   │   └── ProductoNoEncontradoException.php
 │   ├── Http/
-│   │   ├── Controllers/                # Controladores invokables
-│   │   │   ├── Autenticacion/
-│   │   │   │   └── LoginPostController.php
-│   │   │   ├── Producto/
-│   │   │   │   ├── ProductosGetController.php
-│   │   │   │   ├── ProductoGetController.php
-│   │   │   │   ├── ProductoPostController.php
-│   │   │   │   ├── ProductoPutController.php
-│   │   │   │   └── ProductoDeleteController.php
-│   │   │   ├── PrecioProducto/
-│   │   │   │   ├── PrecioProductosGetController.php
-│   │   │   │   └── PrecioProductoPostController.php
-│   │   │   └── Divisa/
-│   │   │       ├── DivisasGetController.php
-│   │   │       └── DivisaPostController.php
-│   │   └── Requests/                   # Validación de formularios
-│   │       ├── Divisa/
-│   │       │   ├── DivisasGetRequest.php
-│   │       │   └── DivisaPostRequest.php
-│   │       ├── PrecioProducto/
-│   │       │   ├── PreciosGetRequest.php
-│   │       │   └── PrecioPostRequest.php
+│   │   └── Controllers/                # Controladores invokables
+│   │       ├── Autenticacion/
+│   │       │   └── LoginPostController.php
 │   │       ├── Producto/
-│   │       │   ├── ProductosGetRequest.php
-│   │       │   ├── ProductoPostRequest.php
-│   │       │   └── ProductoPutRequest.php
-│   │       └── Usuario/
-│   │           └── LoginPostRequest.php
+│   │       │   ├── ProductosGetController.php
+│   │       │   ├── ProductoGetController.php
+│   │       │   ├── ProductoPostController.php
+│   │       │   ├── ProductoPutController.php
+│   │       │   └── ProductoDeleteController.php
+│   │       ├── PrecioProducto/
+│   │       │   ├── PrecioProductosGetController.php
+│   │       │   └── PrecioProductoPostController.php
+│   │       └── Divisa/
+│   │           ├── DivisasGetController.php
+│   │           └── DivisaPostController.php
 │   ├── Models/
 │   │   ├── Usuario.php                 # Modelo de usuario
 │   │   ├── Producto.php                # Modelo de producto
@@ -493,8 +480,8 @@ La API incluye documentación interactiva con Swagger UI:
 Los controladores son **invokables** (usando `__invoke`) y siguen el patrón:
 - **Un controlador = Un endpoint**: Cada acción tiene su propio controlador
 - **Nombres descriptivos**: `[Recurso][MetodoHTTP]Controller` (ejemplo: `ProductoGetController`, `ProductoPostController`)
+- **Validación en el controlador**: Los controladores validan directamente con `$request->validate()` y manejan todas las respuestas posibles (200, 201, 400, 401, 404)
 - **Acciones de negocio**: La lógica está en `app/Actions/` y es reutilizable desde cualquier contexto (controladores, comandos, jobs)
-- **Form Requests**: La validación está en `app/Http/Requests/` y se inyecta automáticamente
 
 ### Ejemplos
 
@@ -502,12 +489,32 @@ Los controladores son **invokables** (usando `__invoke`) y siguen el patrón:
 // Controlador invokable con inyección por constructor
 class ProductoPostController
 {
-    public function __construct(private CrearProducto $crearProducto) {}
+    public function __construct(private CrearProducto $action) {}
 
-    public function __invoke(ProductoPostRequest $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        $producto = ($this->crearProducto)($request->validated());
-        return response()->json(['error' => [], 'body' => ['product' => $producto]], 201);
+        try {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
+                'price' => ['required', 'decimal:0,2', 'min:0'],
+                'currency_id' => ['required', 'exists:divisas,id'],
+                'tax_cost' => ['required', 'decimal:0,2', 'min:0'],
+                'manufacturing_cost' => ['required', 'decimal:0,2', 'min:0'],
+            ]);
+
+            $producto = ($this->action)($validated);
+
+            return response()->json([
+                'error' => [],
+                'body' => ['product' => $producto],
+            ], JsonResponse::HTTP_CREATED);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error' => $e->errors(),
+                'body' => [],
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
     }
 }
 
