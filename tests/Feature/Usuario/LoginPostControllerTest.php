@@ -2,19 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\User;
+namespace Tests\Feature\Usuario;
 
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class UserControllerTest extends TestCase
+class LoginPostControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test POST /login returns token with valid credentials
+     */
     public function test_login_with_valid_credentials(): void
     {
-        $usuario = \App\Models\Usuario::factory()->create([
+        $usuario = Usuario::factory()->create([
             'email' => 'test@example.com',
             'password' => 'password',
         ]);
@@ -38,6 +41,9 @@ class UserControllerTest extends TestCase
         $this->assertEmpty($json['error']);
     }
 
+    /**
+     * Test POST /login returns 401 with invalid credentials
+     */
     public function test_login_with_invalid_credentials(): void
     {
         $response = $this->post('/api/login', [
@@ -56,6 +62,9 @@ class UserControllerTest extends TestCase
         $this->assertEmpty($json['body']);
     }
 
+    /**
+     * Test POST /login returns 400 with invalid request data
+     */
     public function test_login_with_invalid_request(): void
     {
         $response = $this->post('/api/login', [
