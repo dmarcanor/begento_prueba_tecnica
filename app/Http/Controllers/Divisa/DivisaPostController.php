@@ -10,9 +10,11 @@ use Illuminate\Http\JsonResponse;
 
 class DivisaPostController
 {
-    public function __invoke(DivisaPostRequest $request, CrearDivisa $action): JsonResponse
+    public function __construct(private CrearDivisa $action) {}
+
+    public function __invoke(DivisaPostRequest $request): JsonResponse
     {
-        $divisa = $action($request->validated());
+        $divisa = ($this->action)($request->validated());
 
         return response()->json([
             'error' => [],
