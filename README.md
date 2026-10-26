@@ -292,7 +292,6 @@ curl -X POST http://localhost:8000/api/divisas \
 
 **Éxito**:
 ```json
-```json
 {
   "error": [],
   "body": {
@@ -310,7 +309,6 @@ curl -X POST http://localhost:8000/api/divisas \
     }
   }
 }
-```
 ```
 
 **Error de validación**:
