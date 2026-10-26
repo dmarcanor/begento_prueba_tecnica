@@ -402,11 +402,50 @@ La API incluye documentación interactiva con Swagger UI:
 ```
 .
 ├── app/
-│   ├── Http/Controllers/
-│   │   ├── UsuarioController.php       # Autenticación
-│   │   ├── ProductoController.php      # CRUD de productos
-│   │   ├── PrecioProductoController.php # Gestión de precios
-│   │   └── DivisaController.php         # Gestión de divisas
+│   ├── Actions/                        # Lógica de negocio reutilizable
+│   │   ├── Divisa/
+│   │   │   ├── CrearDivisa.php
+│   │   │   └── ObtenerDivisas.php
+│   │   ├── PrecioProducto/
+│   │   │   ├── CrearPrecio.php
+│   │   │   └── ObtenerPrecios.php
+│   │   ├── Producto/
+│   │   │   ├── ActualizarProducto.php
+│   │   │   ├── CrearProducto.php
+│   │   │   ├── EliminarProducto.php
+│   │   │   ├── ObtenerProducto.php
+│   │   │   └── ObtenerProductos.php
+│   │   └── Usuario/
+│   │       └── LoginUsuario.php
+│   ├── Http/
+│   │   ├── Controllers/                # Controladores invokables
+│   │   │   ├── Autenticacion/
+│   │   │   │   └── LoginPostController.php
+│   │   │   ├── Producto/
+│   │   │   │   ├── ProductosGetController.php
+│   │   │   │   ├── ProductoGetController.php
+│   │   │   │   ├── ProductoPostController.php
+│   │   │   │   ├── ProductoPutController.php
+│   │   │   │   └── ProductoDeleteController.php
+│   │   │   ├── PrecioProducto/
+│   │   │   │   ├── PrecioProductosGetController.php
+│   │   │   │   └── PrecioProductoPostController.php
+│   │   │   └── Divisa/
+│   │   │       ├── DivisasGetController.php
+│   │   │       └── DivisaPostController.php
+│   │   └── Requests/                   # Validación de formularios
+│   │       ├── Divisa/
+│   │       │   ├── DivisasGetRequest.php
+│   │       │   └── DivisaPostRequest.php
+│   │       ├── PrecioProducto/
+│   │       │   ├── PreciosGetRequest.php
+│   │       │   └── PrecioPostRequest.php
+│   │       ├── Producto/
+│   │       │   ├── ProductosGetRequest.php
+│   │       │   ├── ProductoPostRequest.php
+│   │       │   └── ProductoPutRequest.php
+│   │       └── Usuario/
+│   │           └── LoginPostRequest.php
 │   └── Models/
 │       ├── Usuario.php                 # Modelo de usuario
 │       ├── Producto.php                # Modelo de producto
@@ -441,18 +480,53 @@ La API incluye documentación interactiva con Swagger UI:
 
 - **Modelos, tablas, variables, funciones, clases, comentarios**: Español
 - **Respuestas de API**: Inglés (estándar REST)
-- **Nombres de métodos del controlador**: Inglés (convención Laravel)
+- **Nombres de controladores**: Inglés con patrón `RecursoMetodoController` (convención de controladores invokables)
+
+### Arquitectura
+
+Los controladores son **invokables** (usando `__invoke`) y siguen el patrón:
+- **Un controlador = Un endpoint**: Cada acción tiene su propio controlador
+- **Nombres descriptivos**: `[Recurso][MetodoHTTP]Controller` (ejemplo: `ProductoGetController`, `ProductoPostController`)
+- **Acciones de negocio**: La lógica está en `app/Actions/` y es reutilizable desde cualquier contexto (controladores, comandos, jobs)
+- **Form Requests**: La validación está en `app/Http/Requests/` y se inyecta automáticamente
 
 ### Ejemplos
 
 ```php
-// Modelo en español
-class PrecioProducto extends Model { }
-
-// Respuesta API en inglés
+// Controlador invokable (un endpoint = un controlador)
+class ProductoPostController
 {
-  "price": 100.00,
-  "currency_id": 1
+    public function __invoke(ProductoPostRequest $request, CrearProducto $action): JsonResponse
+    {
+        $producto = $action($request->validated());
+        return response()->json(['data' => $producto], 201);
+    }
+}
+
+// Acción de negocio (reutilizable)
+class CrearProducto
+{
+    public function __invoke(array $datos): Producto
+    {
+        return Producto::create($datos);
+    }
+}
+```
+
+### Modelo en español
+
+```php
+class PrecioProducto extends Model { }
+```
+
+### Respuesta API en inglés
+
+```json
+{
+  "data": {
+    "price": 100.00,
+    "currency_id": 1
+  }
 }
 ```
 
