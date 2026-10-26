@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Usuario;
+namespace Tests\Unit\Autenticacion;
 
 use App\Actions\Autenticacion\LoginUsuario;
 use App\Exceptions\CredencialesInvalidasException;
