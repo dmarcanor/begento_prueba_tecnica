@@ -10,9 +10,11 @@ use Illuminate\Http\JsonResponse;
 
 class ProductoPostController
 {
-    public function __invoke(ProductoPostRequest $request, CrearProducto $action): JsonResponse
+    public function __construct(private CrearProducto $action) {}
+
+    public function __invoke(ProductoPostRequest $request): JsonResponse
     {
-        $producto = $action($request->validated());
+        $producto = ($this->action)($request->validated());
 
         return response()->json([
             'error' => [],
