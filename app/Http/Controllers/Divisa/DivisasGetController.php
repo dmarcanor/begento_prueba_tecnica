@@ -5,24 +5,39 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Divisa;
 
 use App\Actions\Divisa\ObtenerDivisas;
-use App\Http\Requests\Divisa\DivisasGetRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class DivisasGetController
 {
     public function __construct(private ObtenerDivisas $action) {}
 
-    public function __invoke(DivisasGetRequest $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        $divisas = ($this->action)([
-            'per_page' => $request->validated('per_page', 10),
-            'sort_by' => $request->validated('sort_by', 'id'),
-            'sort_direction' => $request->validated('sort_direction', 'desc'),
-        ]);
+        try {
+            $validated = $request->validate([
+                'per_page' => ['integer', 'min:1', 'max:100'],
+                'sort_by' => Rule::in(['id', 'name', 'symbol', 'exchange_rate', 'created_at', 'updated_at']),
+                'sort_direction' => Rule::in(['asc', 'desc']),
+            ]);
 
-        return response()->json([
-            'error' => [],
-            'body' => ['divisas' => $divisas],
-        ], JsonResponse::HTTP_OK);
+            $divisas = ($this->action)([
+                'per_page' => $validated['per_page'] ?? 10,
+                'sort_by' => $validated['sort_by'] ?? 'id',
+                'sort_direction' => $validated['sort_direction'] ?? 'desc',
+            ]);
+
+            return response()->json([
+                'error' => [],
+                'body' => ['divisas' => $divisas],
+            ], JsonResponse::HTTP_OK);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'error' => $e->errors(),
+                'body' => [],
+            ], JsonResponse::HTTP_BAD_REQUEST);
+        }
     }
 }
