@@ -505,11 +505,11 @@ products = response.json()
 La API incluye documentación interactiva con Swagger UI:
 
 1. Inicia la aplicación: `make up`
-2. Abre en tu navegador: `http://localhost:8000/api/docs`
+2. Abre en tu navegador: `http://localhost:8000/docs/swagger-ui.html`
 
 ## Recursos Adicionales
 
-- **OpenAPI Spec**: `docs/openapi.yaml`
+- **OpenAPI Spec**: `public/docs/openapi.yaml`
 - **Postman Collection**: `docs/postman_collection.json`
 - **Insomnia Collection**: `docs/insomnia.json`
 
