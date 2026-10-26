@@ -277,6 +277,87 @@ components:
                 last_page:
                   type: integer
 
+    Divisa:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Euro
+        symbol:
+          type: string
+          example: "€"
+        exchange_rate:
+          type: string
+          example: "0.92000000"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    DivisaRequest:
+      type: object
+      required:
+        - name
+        - symbol
+        - exchange_rate
+      properties:
+        name:
+          type: string
+          maxLength: 255
+          example: Euro
+        symbol:
+          type: string
+          maxLength: 255
+          example: "€"
+        exchange_rate:
+          type: number
+          format: decimal
+          minimum: 0
+          maximum: 99999999.99999999
+          example: 0.92000000
+
+    DivisaResponse:
+      type: object
+      properties:
+        error:
+          type: array
+          items: {}
+        body:
+          type: object
+          properties:
+            divisa:
+              $ref: '#/components/schemas/Divisa'
+
+    DivisaListResponse:
+      type: object
+      properties:
+        error:
+          type: array
+          items: {}
+        body:
+          type: object
+          properties:
+            divisas:
+              type: object
+              properties:
+                current_page:
+                  type: integer
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Divisa'
+                per_page:
+                  type: integer
+                total:
+                  type: integer
+                last_page:
+                  type: integer
+
 paths:
   /login:
     post:
@@ -636,6 +717,96 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /divisas:
+    get:
+      tags:
+        - Divisas
+      summary: Listar divisas
+      description: Obtiene una lista paginada de divisas
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: per_page
+          in: query
+          description: Número de divisas por página
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: page
+          in: query
+          description: Número de página
+          schema:
+            type: integer
+            default: 1
+        - name: sort_by
+          in: query
+          description: Campo para ordenar
+          schema:
+            type: string
+            enum: [id, name, symbol, exchange_rate, created_at, updated_at]
+            default: id
+        - name: sort_direction
+          in: query
+          description: Dirección del ordenamiento
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        '200':
+          description: Lista de divisas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DivisaListResponse'
+        '400':
+          description: Parámetros de validación inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Divisas
+      summary: Crear divisa
+      description: Crea una nueva divisa
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DivisaRequest'
+      responses:
+        '201':
+          description: Divisa creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DivisaResponse'
+        '400':
+          description: Datos de validación inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: No autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 tags:
   - name: Autenticación
     description: Endpoints de autenticación
@@ -643,3 +814,5 @@ tags:
     description: Gestión de productos
   - name: Precios
     description: Gestión de precios de productos
+  - name: Divisas
+    description: Gestión de divisas (monedas)
