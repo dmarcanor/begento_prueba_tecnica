@@ -21,7 +21,7 @@ http://localhost:8000/api
 
 ## Autenticación
 
-Todos los endpoints de productos y precios requieren autenticación mediante token Bearer.
+Todos los endpoints de productos, precios y divisas requieren autenticación mediante token Bearer.
 
 ### Obtener Token
 
@@ -67,8 +67,8 @@ Authorization: Bearer {tu_token}
 **Parámetros de consulta**:
 - `per_page` (integer, opcional): Número de productos por página (1-100, default: 10)
 - `page` (integer, opcional): Número de página (default: 1)
-- `sort_by` (string, opcional): Campo para ordenar (id, name, description, price, currency_id, tax_cost, manufacturing_cost, created_at, updated_at)
-- `sort_direction` (string, opcional): Dirección del ordenamiento (asc, desc)
+- `sort_by` (string, opcional): Campo para ordenar (id, name, description, price, currency_id, tax_cost, manufacturing_cost, created_at, updated_at) (default: id)
+- `sort_direction` (string, opcional): Dirección del ordenamiento (asc, desc) (default: desc)
 
 **Response** (200 OK):
 ```json
@@ -193,7 +193,7 @@ Authorization: Bearer {tu_token}
 **Parámetros**:
 - `id` (integer, requerido): ID del producto
 
-**Request** (todos los campos son requeridos):
+**Request** (todos los campos son opcionales):
 ```json
 {
   "name": "Producto actualizado",
@@ -204,6 +204,14 @@ Authorization: Bearer {tu_token}
   "manufacturing_cost": 60.00
 }
 ```
+
+**Validaciones** (opcionales):
+- `name`: string, máximo 255 caracteres
+- `description`: string
+- `price`: decimal (0 a 9999999999999.99), máximo 2 decimales
+- `currency_id`: integer, debe existir en la tabla divisas
+- `tax_cost`: decimal (0 a 9999999999999.99), máximo 2 decimales
+- `manufacturing_cost`: decimal (0 a 9999999999999.99), máximo 2 decimales
 
 **Response** (200 OK):
 ```json
@@ -223,6 +231,24 @@ Authorization: Bearer {tu_token}
       "deleted_at": null
     }
   }
+}
+```
+
+**Response** (400 Bad Request):
+```json
+{
+  "error": {
+    "price": ["The price field must be at least 0."]
+  },
+  "body": []
+}
+```
+
+**Response** (404 Not Found):
+```json
+{
+  "error": ["Product not found"],
+  "body": []
 }
 ```
 
@@ -255,8 +281,8 @@ Authorization: Bearer {tu_token}
 - `id` (integer, requerido): ID del producto
 - `per_page` (integer, opcional): Número de precios por página (1-100, default: 10)
 - `page` (integer, opcional): Número de página (default: 1)
-- `sort_by` (string, opcional): Campo para ordenar (id, product_id, currency_id, price, created_at, updated_at)
-- `sort_direction` (string, opcional): Dirección del ordenamiento (asc, desc)
+- `sort_by` (string, opcional): Campo para ordenar (id, product_id, currency_id, price, created_at, updated_at) (default: created_at)
+- `sort_direction` (string, opcional): Dirección del ordenamiento (asc, desc) (default: desc)
 
 **Response** (200 OK):
 ```json
