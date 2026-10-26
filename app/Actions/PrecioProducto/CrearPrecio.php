@@ -7,19 +7,16 @@ namespace App\Actions\PrecioProducto;
 use App\Models\PrecioProducto;
 use App\Services\Producto\BuscarProducto;
 
-/**
- * Crea un nuevo precio para un producto.
- */
 class CrearPrecio
 {
     public function __construct(private BuscarProducto $buscarProducto) {}
 
-    public function __invoke(int $idProducto, array $datos): PrecioProducto
+    public function __invoke(int $productoId, array $datos): PrecioProducto
     {
-        ($this->buscarProducto)($idProducto);
+        ($this->buscarProducto)($productoId);
 
         $precio = PrecioProducto::create([
-            'product_id' => $idProducto,
+            'product_id' => $productoId,
             'price' => $datos['price'],
             'currency_id' => $datos['currency_id'],
         ]);
