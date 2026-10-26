@@ -43,6 +43,12 @@
       "parentId": "wrk_1"
     },
     {
+      "_id": "fld_4",
+      "_type": "request_group",
+      "name": "Divisas",
+      "parentId": "wrk_1"
+    },
+    {
       "_id": "req_1",
       "_type": "request",
       "name": "Login",
@@ -186,6 +192,43 @@
       },
       "parentId": "fld_3",
       "description": "Crea un nuevo precio para un producto"
+    },
+    {
+      "_id": "req_9",
+      "_type": "request",
+      "name": "Listar divisas",
+      "method": "GET",
+      "url": "{{ base_url }}/divisas?per_page=10&page=1&sort_by=id&sort_direction=asc",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_4",
+      "description": "Obtiene una lista paginada de divisas"
+    },
+    {
+      "_id": "req_10",
+      "_type": "request",
+      "name": "Crear divisa",
+      "method": "POST",
+      "url": "{{ base_url }}/divisas",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Euro\",\n  \"symbol\": \"€\",\n  \"exchange_rate\": 0.92000000\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_4",
+      "description": "Crea una nueva divisa"
     }
   ]
 }
