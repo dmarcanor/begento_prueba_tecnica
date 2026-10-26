@@ -291,7 +291,7 @@ Authorization: Bearer {tu_token}
 }
 ```
 
-### 7. Crear Precio
+## 7. Crear Precio
 
 **Endpoint**: `POST /products/{id}/prices`
 
@@ -332,6 +332,80 @@ Authorization: Bearer {tu_token}
         "created_at": "2026-10-26T00:00:00.000000Z",
         "updated_at": "2026-10-26T00:00:00.000000Z"
       }
+    }
+  }
+}
+```
+
+### 8. Listar Divisas
+
+**Endpoint**: `GET /divisas`
+
+**Autenticación**: Requerida
+
+**Parámetros de consulta**:
+- `per_page` (integer, opcional): Número de divisas por página (1-100, default: 10)
+- `page` (integer, opcional): Número de página (default: 1)
+- `sort_by` (string, opcional): Campo para ordenar (id, name, symbol, exchange_rate, created_at, updated_at)
+- `sort_direction` (string, opcional): Dirección del ordenamiento (asc, desc)
+
+**Response** (200 OK):
+```json
+{
+  "error": [],
+  "body": {
+    "divisas": {
+      "current_page": 1,
+      "data": [
+        {
+          "id": 1,
+          "name": "Euro",
+          "symbol": "€",
+          "exchange_rate": "0.92000000",
+          "created_at": "2026-10-26T00:00:00.000000Z",
+          "updated_at": "2026-10-26T00:00:00.000000Z"
+        }
+      ],
+      "per_page": 10,
+      "total": 1,
+      "last_page": 1
+    }
+  }
+}
+```
+
+### 9. Crear Divisa
+
+**Endpoint**: `POST /divisas`
+
+**Autenticación**: Requerida
+
+**Request**:
+```json
+{
+  "name": "Euro",
+  "symbol": "€",
+  "exchange_rate": 0.92000000
+}
+```
+
+**Validaciones**:
+- `name`: requerido, string, máximo 255 caracteres
+- `symbol`: requerido, string, máximo 255 caracteres
+- `exchange_rate`: requerido, decimal (0 a 99999999.99999999), máximo 8 decimales
+
+**Response** (201 Created):
+```json
+{
+  "error": [],
+  "body": {
+    "divisa": {
+      "id": 1,
+      "name": "Euro",
+      "symbol": "€",
+      "exchange_rate": "0.92000000",
+      "created_at": "2026-10-26T00:00:00.000000Z",
+      "updated_at": "2026-10-26T00:00:00.000000Z"
     }
   }
 }
