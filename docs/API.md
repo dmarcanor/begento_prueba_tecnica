@@ -317,7 +317,7 @@ Authorization: Bearer {tu_token}
 }
 ```
 
-## 7. Crear Precio
+### 7. Crear Precio
 
 **Endpoint**: `POST /products/{id}/prices`
 
