@@ -120,30 +120,45 @@ docker compose exec php php artisan db:seed
 ### Sin Docker
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Instalar PHP, extensiones y PostgreSQL
+sudo apt update
+sudo apt install postgresql php8.4-pgsql php8.4-xml
+```
+
+```bash
+# 2. Clonar el repositorio
 git clone <url-del-repositorio>
 cd prueba_tecnica
 
-# 2. Instalar dependencias PHP
+# 3. Instalar dependencias PHP
 composer install
 
-# 3. Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales de PostgreSQL
+# 4. Configurar la contraseña del usuario de PostgreSQL
+sudo -u postgres psql
+\password postgres
+\q
 
-# 4. Generar clave de aplicación
+# 5. Crear la base de datos
+sudo -u postgres psql -c "CREATE DATABASE prueba_tecnica;"
+
+# 6. Configurar variables de entorno
+cp .env.example .env
+# Editar .env:
+#   DB_HOST=127.0.0.1
+#   DB_DATABASE=prueba_tecnica
+#   DB_USERNAME=postgres
+#   DB_PASSWORD=<la contraseña definida en el paso 4>
+
+# 7. Generar clave de aplicación
 php artisan key:generate
 
-# 5. Crear base de datos
-psql -U tu_usuario -c "CREATE DATABASE prueba_tecnica;"
-
-# 6. Ejecutar migraciones
+# 8. Ejecutar migraciones
 php artisan migrate
 
-# 7. Cargar datos de prueba
+# 9. Cargar datos de prueba
 php artisan db:seed
 
-# 8. Iniciar servidor de desarrollo
+# 10. Iniciar servidor de desarrollo
 php artisan serve
 ```
 
