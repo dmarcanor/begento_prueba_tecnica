@@ -2,19 +2,19 @@
 
 namespace Database\Factories;
 
-use App\Models\Currency;
+use App\Models\Divisa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Currency>
+ * @extends Factory<Divisa>
  */
-class CurrencyFactory extends Factory
+class DivisaFactory extends Factory
 {
     public function definition(): array
     {
         return [
             "name" => fake()->currencyCode(),
-            "symbol" => fake()->randomElement(["$", "€", "£", "¥", "Bs.", "₡", "S/."]),
+            "symbol" => fake()->randomElement(["$", "€", "Bs."]),
             "exchange_rate" => fake()->randomFloat(8, 0.5, 50),
         ];
     }

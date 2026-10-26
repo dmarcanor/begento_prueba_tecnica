@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Currency;
-use App\Models\Product;
+use App\Models\Divisa;
+use App\Models\Producto;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Product>
+ * @extends Factory<Producto>
  */
-class ProductFactory extends Factory
+class ProductoFactory extends Factory
 {
     public function definition(): array
     {
@@ -17,7 +17,7 @@ class ProductFactory extends Factory
             "name" => fake()->words(3, true),
             "description" => fake()->paragraph(),
             "price" => fake()->randomFloat(2, 10, 1000),
-            "currency_id" => Currency::factory(),
+            "currency_id" => Divisa::factory(),
             "tax_cost" => fake()->randomFloat(2, 0, 100),
             "manufacturing_cost" => fake()->randomFloat(2, 5, 500),
         ];
