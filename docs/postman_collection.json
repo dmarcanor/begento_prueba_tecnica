@@ -228,6 +228,94 @@
       ]
     },
     {
+      "name": "Divisas",
+      "item": [
+        {
+          "name": "Listar divisas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/divisas?per_page=10&page=1&sort_by=id&sort_direction=asc",
+              "host": ["{{base_url}}"],
+              "path": ["divisas"],
+              "query": [
+                {
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Número de divisas por página"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Número de página"
+                },
+                {
+                  "key": "sort_by",
+                  "value": "id",
+                  "description": "Campo para ordenar (id, name, symbol, exchange_rate, created_at, updated_at)"
+                },
+                {
+                  "key": "sort_direction",
+                  "value": "asc",
+                  "description": "Dirección del ordenamiento (asc, desc)"
+                }
+              ]
+            },
+            "description": "Obtiene una lista paginada de divisas"
+          }
+        },
+        {
+          "name": "Crear divisa",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('currency_id', jsonData.body.divisa.id);",
+                  "    pm.test('Divisa creada', function() {",
+                  "        pm.expect(jsonData.body.divisa.id).to.be.a('number');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Euro\",\n  \"symbol\": \"€\",\n  \"exchange_rate\": 0.92000000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/divisas",
+              "host": ["{{base_url}}"],
+              "path": ["divisas"]
+            },
+            "description": "Crea una nueva divisa"
+          }
+        }
+      ]
+    },
+    {
       "name": "Precios",
       "item": [
         {
