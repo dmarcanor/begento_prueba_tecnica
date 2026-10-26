@@ -38,7 +38,7 @@ Sistema que permite:
 
 ## Stack Tecnológico
 
-- **Backend**: Laravel 13 (PHP 8.3+)
+- **Backend**: Laravel 13 (PHP 8.5.12)
 - **Base de datos**: PostgreSQL 18
 - **Autenticación**: Laravel Sanctum
 - **Servidor web**: Nginx + PHP-FPM
@@ -54,7 +54,7 @@ Sistema que permite:
 
 ### Sin Docker
 
-- PHP 8.3 o superior
+- PHP 8.5.12
 - Composer 2.0+
 - PostgreSQL 18
 - Extensiones PHP: pdo_pgsql, bcmath, sockets
@@ -292,12 +292,25 @@ curl -X POST http://localhost:8000/api/divisas \
 
 **Éxito**:
 ```json
+```json
 {
   "error": [],
   "body": {
-    "data": "..."
+    "product": {
+      "id": 1,
+      "name": "Producto de ejemplo",
+      "description": "Descripción detallada del producto",
+      "price": "100.00",
+      "currency_id": 1,
+      "tax_cost": "16.00",
+      "manufacturing_cost": "50.00",
+      "created_at": "2026-10-26T00:00:00.000000Z",
+      "updated_at": "2026-10-26T00:00:00.000000Z",
+      "deleted_at": null
+    }
   }
 }
+```
 ```
 
 **Error de validación**:
@@ -381,7 +394,7 @@ make test
 ./vendor/bin/phpunit
 ```
 
-**Estadísticas**: 36 tests, 268 aserciones, 100% passing
+**Estadísticas**: 67 tests, 387 aserciones, 100% passing
 
 ## Documentación Interactiva
 
@@ -415,7 +428,7 @@ La API incluye documentación interactiva con Swagger UI:
 │   │   │   ├── EliminarProducto.php
 │   │   │   ├── ObtenerProducto.php
 │   │   │   └── ObtenerProductos.php
-│   │   └── Usuario/
+│   │   └── Autenticacion/
 │   │       └── LoginUsuario.php
 │   ├── Exceptions/                     # Excepciones de dominio
 │   │   ├── CredencialesInvalidasException.php
@@ -551,9 +564,14 @@ class PrecioProducto extends Model { }
 
 ```json
 {
-  "data": {
-    "price": 100.00,
-    "currency_id": 1
+  "error": [],
+  "body": {
+    "product": {
+      "id": 1,
+      "name": "Producto de ejemplo",
+      "price": "100.00",
+      "currency_id": 1
+    }
   }
 }
 ```
