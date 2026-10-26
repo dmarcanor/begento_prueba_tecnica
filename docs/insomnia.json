@@ -1,0 +1,191 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-10-26T01:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_1",
+      "_type": "workspace",
+      "name": "Prueba Técnica API",
+      "description": "API REST para gestión de productos con precios multi-moneda",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_1",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000/api",
+        "access_token": ""
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "access_token"]
+      },
+      "parentId": "wrk_1"
+    },
+    {
+      "_id": "fld_1",
+      "_type": "request_group",
+      "name": "Autenticación",
+      "parentId": "wrk_1"
+    },
+    {
+      "_id": "fld_2",
+      "_type": "request_group",
+      "name": "Productos",
+      "parentId": "wrk_1"
+    },
+    {
+      "_id": "fld_3",
+      "_type": "request_group",
+      "name": "Precios",
+      "parentId": "wrk_1"
+    },
+    {
+      "_id": "req_1",
+      "_type": "request",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ base_url }}/login",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}"
+      },
+      "authentication": {},
+      "parentId": "fld_1",
+      "description": "Autentica un usuario y devuelve un token de acceso"
+    },
+    {
+      "_id": "req_2",
+      "_type": "request",
+      "name": "Listar productos",
+      "method": "GET",
+      "url": "{{ base_url }}/products?per_page=10&page=1&sort_by=id&sort_direction=desc",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_2",
+      "description": "Obtiene una lista paginada de productos"
+    },
+    {
+      "_id": "req_3",
+      "_type": "request",
+      "name": "Crear producto",
+      "method": "POST",
+      "url": "{{ base_url }}/products",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Producto de ejemplo\",\n  \"description\": \"Descripción detallada del producto\",\n  \"price\": 100.00,\n  \"currency_id\": 1,\n  \"tax_cost\": 16.00,\n  \"manufacturing_cost\": 50.00\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_2",
+      "description": "Crea un nuevo producto"
+    },
+    {
+      "_id": "req_4",
+      "_type": "request",
+      "name": "Obtener producto",
+      "method": "GET",
+      "url": "{{ base_url }}/products/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_2",
+      "description": "Obtiene un producto específico por ID"
+    },
+    {
+      "_id": "req_5",
+      "_type": "request",
+      "name": "Actualizar producto",
+      "method": "PUT",
+      "url": "{{ base_url }}/products/1",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Producto actualizado\",\n  \"description\": \"Descripción actualizada\",\n  \"price\": 150.00,\n  \"currency_id\": 1,\n  \"tax_cost\": 20.00,\n  \"manufacturing_cost\": 60.00\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_2",
+      "description": "Actualiza un producto existente"
+    },
+    {
+      "_id": "req_6",
+      "_type": "request",
+      "name": "Eliminar producto",
+      "method": "DELETE",
+      "url": "{{ base_url }}/products/1",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_2",
+      "description": "Elimina un producto (soft delete)"
+    },
+    {
+      "_id": "req_7",
+      "_type": "request",
+      "name": "Listar precios de un producto",
+      "method": "GET",
+      "url": "{{ base_url }}/products/1/prices?per_page=10&page=1&sort_by=created_at&sort_direction=desc",
+      "headers": [
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_3",
+      "description": "Obtiene una lista paginada de precios para un producto específico"
+    },
+    {
+      "_id": "req_8",
+      "_type": "request",
+      "name": "Crear precio",
+      "method": "POST",
+      "url": "{{ base_url }}/products/1/prices",
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "Accept", "value": "application/json" }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"price\": 120.00,\n  \"currency_id\": 1\n}"
+      },
+      "authentication": {
+        "type": "bearer",
+        "token": "{{ access_token }}"
+      },
+      "parentId": "fld_3",
+      "description": "Crea un nuevo precio para un producto"
+    }
+  ]
+}
